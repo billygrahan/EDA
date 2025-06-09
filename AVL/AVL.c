@@ -434,58 +434,6 @@ int contar_nos(No *raiz)
     return 1 + contar_nos(raiz->esq) + contar_nos(raiz->dir);
 }
 
-//int main() {
-    // No *raiz = NULL;
-    // char h;
-
-    // // Inserção
-    // inserir(&raiz, 30, &h);
-    // inserir(&raiz, 20, &h);
-    // inserir(&raiz, 40, &h);
-    // inserir(&raiz, 10, &h);
-    // inserir(&raiz, 25, &h);
-    // inserir(&raiz, 5, &h);
-    // inserir(&raiz, 21, &h);
-    // inserir(&raiz, 34, &h);
-    // inserir(&raiz, 33, &h);
-    // inserir(&raiz, 14, &h);
-    // inserir(&raiz, 31, &h);
-    // inserir(&raiz, 35, &h);
-    // inserir(&raiz, 36, &h);
-    // inserir(&raiz, 37, &h);
-    // inserir(&raiz, 38, &h);
-
-    // printf("Árvore em ordem antes da remoção:\n");
-    // print_inordem(raiz);
-    // printf("\n");
-
-    // printf("Altura da árvore: %d\n", altura(raiz));
-
-    // printf("Quantidade de nós na árvore: %d\n", contar_nos(raiz));
-
-    // if (arvoreEhAVL(raiz))
-    //     printf("A árvore está balanceada e os fatores bal estão corretos!\n");
-    // else
-    //     printf("A árvore NÃO está balanceada ou os fatores bal estão incorretos!\n");
-
-    // // Remoção
-    // char is_modified_heigth = 'F';
-    // removeAVL(20, &raiz, &is_modified_heigth);
-    // printf("Árvore em ordem após a remoção de 20:\n");
-    // print_inordem(raiz);
-    // printf("\n");
-    // printf("Altura da árvore após remoção: %d\n", altura(raiz));
-
-    // printf("Quantidade de nós na árvore: %d\n", contar_nos(raiz));
-
-    // if (arvoreEhAVL(raiz))
-    //     printf("A árvore está balanceada e os fatores bal estão corretos!\n");
-    // else
-    //     printf("A árvore NÃO está balanceada ou os fatores bal estão incorretos!\n");
-
-    //return 0;
-//}
-
 void embaralhar(int *v, int n)
 {
     for (int i = n - 1; i > 0; i--)
@@ -504,56 +452,4 @@ void liberar(No *raiz)
     liberar(raiz->esq);
     liberar(raiz->dir);
     free(raiz);
-}
-
-int main()
-{
-    int num_avls = 1000;  // Reduza para testar!
-    int num_nos = 10000; // Reduza para testar!
-    int max_val = 100000;
-
-    if (num_nos > max_val + 1)
-    {
-        printf("num_nos não pode ser maior que max_val + 1!\n");
-        return 1;
-    }
-
-    No *avls[num_avls];
-    char h;
-    srand(time(NULL));
-
-    for (int i = 0; i < num_avls; i++)
-        avls[i] = NULL;
-
-    int *todos = malloc((max_val + 1) * sizeof(int));
-    for (int i = 0; i <= max_val; i++)
-        todos[i] = i;
-
-    for (int i = 0; i < num_avls; i++)
-    {
-        embaralhar(todos, max_val + 1);
-        for (int j = 0; j < num_nos; j++)
-            inserir(&avls[i], todos[j], &h);
-    }
-    free(todos);
-
-    int todas_ok = 1;
-    for (int i = 0; i < num_avls; i++)
-    {
-        int total = contar_nos(avls[i]);
-        int eh_avl = arvoreEhAVL(avls[i]);
-        if (total != num_nos || !eh_avl)
-        {
-            printf("AVL %d: %d nós (esperado: %d), AVL válida? %s\n",
-                   i, total, num_nos, eh_avl ? "SIM" : "NÃO");
-            todas_ok = 0;
-        }
-        //liberar(avls[i]);
-    }
-    if (todas_ok)
-        printf("Todas as %d AVL's têm exatamente %d nós!\n", num_avls, num_nos);
-    else
-        printf("Alguma AVL não tem a quantidade correta de nós!\n");
-
-    return 0;
 }
