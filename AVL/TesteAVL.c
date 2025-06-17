@@ -7,6 +7,11 @@
 /// home/billy/EDA/AVL/output/TesteAVL
 int main()
 {
+    clock_t inicio, fim;
+    double tempo_gasto;
+
+    inicio = clock(); // Marca o início
+
     int num_inserir = 10000;
     int num_remover = 1000;
     int max_val = 100000;
@@ -51,5 +56,9 @@ int main()
     liberar(raiz);
     free(valores);
 
+    fim = clock(); // Marca o fim
+    tempo_gasto = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
+    printf("Tempo de execução: %.4f segundos\n", tempo_gasto);
+    
     return 0;
 }

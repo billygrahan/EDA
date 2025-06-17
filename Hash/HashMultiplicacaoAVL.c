@@ -1,14 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "../AVL/AVL.h"
 
-double A = 0.6180339887; // constante sugerida
-
-typedef struct No
-{
-    int valor;
-    struct No *prox;
-} No;
+double A = 0.6180339887;
 
 int hashMultiplicacao(int chave, int tamanho)
 {
@@ -20,25 +15,8 @@ int hashMultiplicacao(int chave, int tamanho)
 void adicionarNo(No **tabela, int chave, int tamanho)
 {
     int indice = hashMultiplicacao(chave, tamanho);
-    No *novoNo = (No *)malloc(sizeof(No));
-    novoNo->valor = chave;
-    novoNo->prox = tabela[indice];
-    tabela[indice] = novoNo;
-}
-
-void imprimirTabela(No **tabela, int tamanho)
-{
-    for (int i = 0; i < tamanho; i++)
-    {
-        No *atual = tabela[i];
-        printf("Indice %d: ", i);
-        while (atual != NULL)
-        {
-            printf("%d -> ", atual->valor);
-            atual = atual->prox;
-        }
-        printf("NULL\n");
-    }
+    char h = 'F';
+    inserir(&tabela[indice], chave, &h); 
 }
 
 int buscarNo(No **tabela, int chave, int tamanho)
@@ -49,7 +27,10 @@ int buscarNo(No **tabela, int chave, int tamanho)
     {
         if (atual->valor == chave)
             return 1;
-        atual = atual->prox;
+        if (chave < atual->valor)
+            atual = atual->esq;
+        else
+            atual = atual->dir;
     }
     return 0;
 }
@@ -65,7 +46,7 @@ void embaralhar(int *vet, int n)
     }
 }
 
-void MultiplicacaoLista()
+void MultiplicacaoAVL()
 {
     clock_t inicio, fim;
     double tempo_gasto;
@@ -76,7 +57,6 @@ void MultiplicacaoLista()
     int tamanho = 200000;
     int max_val = 2000000000;
     int buscas = 1000000;
-    int colisoes = 0;
 
     No **tabela = (No **)malloc(tamanho * sizeof(No *));
     for (int i = 0; i < tamanho; i++)
@@ -89,14 +69,7 @@ void MultiplicacaoLista()
     embaralhar(valores, n);
 
     for (int i = 0; i < n; i++)
-    {
-        int indice = hashMultiplicacao(valores[i], tamanho);
-        if (tabela[indice] != NULL)
-            colisoes++;
         adicionarNo(tabela, valores[i], tamanho);
-    }
-
-    imprimirTabela(tabela, tamanho);
 
     int achadas = 0;
     for (int i = 0; i < buscas; i++)
@@ -106,19 +79,10 @@ void MultiplicacaoLista()
             achadas++;
     }
 
-    printf("Hash Multiplicação (Lista): Chaves encontradas: %d de %d buscas\n", achadas, buscas);
-    printf("Colisões: %d\n", colisoes);
+    printf("Hash Multiplicação (AVL): Chaves encontradas: %d de %d buscas\n", achadas, buscas);
 
     for (int i = 0; i < tamanho; i++)
-    {
-        No *atual = tabela[i];
-        while (atual != NULL)
-        {
-            No *tmp = atual;
-            atual = atual->prox;
-            free(tmp);
-        }
-    }
+        liberar(tabela[i]);
     free(tabela);
     free(valores);
 
@@ -129,29 +93,6 @@ void MultiplicacaoLista()
 
 int main()
 {
-    MultiplicacaoLista();
+    MultiplicacaoAVL();
     return 0;
 }
-
-// int main()
-// {
-//     int tamanho = 10;
-//     No **tabela = (No **)malloc(tamanho * sizeof(No *));
-//     for (int i = 0; i < tamanho; i++)
-//     {
-//         tabela[i] = NULL;
-//     }
-
-//     int chaves[] = {153, 72, 31, 11, 9, 52, 2, 84, 6, 44, 13, 27};
-//     int numChaves = sizeof(chaves) / sizeof(chaves[0]);
-//     for (int i = 0; i < numChaves; i++)
-//     {
-//         int chave = chaves[i];
-//         adicionarNo(tabela, chave, tamanho);
-//     }
-
-//     imprimirTabela(tabela, tamanho);
-
-//     free(tabela);
-//     return 0;
-// }

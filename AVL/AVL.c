@@ -185,7 +185,7 @@ void print_inordem(No *raiz) {
     print_inordem(raiz->dir);
 }
 
-void rotate_esq_remove(No **pt, char *is_modified_heigth)
+void rotate_esq_remove(No **pt, char *h)
 {
     if (*pt == NULL || (*pt)->esq == NULL)
     {
@@ -201,13 +201,13 @@ void rotate_esq_remove(No **pt, char *is_modified_heigth)
         if (ptu->bal == -1)
         {
             ptu->bal = (*pt)->dir->bal = 0;
-            *is_modified_heigth = 'V';
+            *h = 'V';
         }
         else
         {
             ptu->bal = 1;
             (*pt)->dir->bal = -1;
-            *is_modified_heigth = 'F';
+            *h = 'F';
         }
     }
     else
@@ -235,11 +235,11 @@ void rotate_esq_remove(No **pt, char *is_modified_heigth)
             break;
         }
         (*pt)->bal = 0;
-        *is_modified_heigth = 'V';
+        *h = 'V';
     }
 }
 
-void rotate_dir_remove(No **pt, char *is_modified_heigth)
+void rotate_dir_remove(No **pt, char *h)
 {
     if (*pt == NULL || (*pt)->dir == NULL)
     {
@@ -258,13 +258,13 @@ void rotate_dir_remove(No **pt, char *is_modified_heigth)
         {
             (*pt)->esq->bal = 0;
             (*pt)->bal = 0;
-            *is_modified_heigth = 'V';
+            *h = 'V';
         }
         else
         {
             (*pt)->esq->bal = 1;
             (*pt)->bal = -1;
-            *is_modified_heigth = 'F';
+            *h = 'F';
         }
     }
     else
@@ -293,13 +293,13 @@ void rotate_dir_remove(No **pt, char *is_modified_heigth)
             break;
         }
         (*pt)->bal = 0;
-        *is_modified_heigth = 'V';
+        *h = 'V';
     }
 }
 
-void balance(No **pt, char where, char *is_modified_heigth)
+void balance(No **pt, char where, char *h)
 {
-    if (*is_modified_heigth == 'V')
+    if (*h == 'V')
     {
         if (where == 'R')
         {
@@ -310,10 +310,10 @@ void balance(No **pt, char where, char *is_modified_heigth)
                 break;
             case 0:
                 (*pt)->bal = -1;
-                *is_modified_heigth = 'F';
+                *h = 'F';
                 break;
             case -1:
-                rotate_esq_remove(pt, is_modified_heigth);
+                rotate_esq_remove(pt, h);
                 break;
             }
         }
@@ -326,17 +326,17 @@ void balance(No **pt, char where, char *is_modified_heigth)
                 break;
             case 0:
                 (*pt)->bal = 1;
-                *is_modified_heigth = 'F';
+                *h = 'F';
                 break;
             case 1:
-                rotate_dir_remove(pt, is_modified_heigth);
+                rotate_dir_remove(pt, h);
                 break;
             }
         }
     }
 }
 
-void swap(No **pt, No **fatherS)
+void troca(No **pt, No **fatherS)
 {
     if (*pt == NULL || *fatherS == NULL)
     {
@@ -359,26 +359,26 @@ void swap(No **pt, No **fatherS)
     (*fatherS)->dir = tempRight;
 }
 
-void removeAVL(int value, No **pt, char *is_modified_heigth)
+void removeAVL(int value, No **pt, char *h)
 {
     if ((*pt) == NULL)
     {
         puts("element does not exists");
-        *is_modified_heigth = 'F';
+        *h = 'F';
     }
     else
     {
         if (value < (*pt)->valor)
         {
-            removeAVL(value, &(*pt)->esq, is_modified_heigth);
-            balance(pt, 'L', is_modified_heigth);
+            removeAVL(value, &(*pt)->esq, h);
+            balance(pt, 'L', h);
         }
         else
         {
             if (value > (*pt)->valor)
             {
-                removeAVL(value, &(*pt)->dir, is_modified_heigth);
-                balance(pt, 'R', is_modified_heigth);
+                removeAVL(value, &(*pt)->dir, h);
+                balance(pt, 'R', h);
             }
             else
             {
@@ -387,14 +387,14 @@ void removeAVL(int value, No **pt, char *is_modified_heigth)
                 if ((*pt)->esq == NULL)
                 {
                     (*pt) = (*pt)->dir;
-                    *is_modified_heigth = 'V';
+                    *h = 'V';
                 }
                 else
                 {
                     if ((*pt)->dir == NULL)
                     {
                         (*pt) = (*pt)->esq;
-                        *is_modified_heigth = 'V';
+                        *h = 'V';
                     }
                     else
                     {
@@ -405,7 +405,7 @@ void removeAVL(int value, No **pt, char *is_modified_heigth)
                             s->esq = (*pt)->esq;
                             s->bal = (*pt)->bal;
                             (*pt) = s;
-                            *is_modified_heigth = 'V';
+                            *h = 'V';
                         }
                         else
                         {
@@ -415,10 +415,10 @@ void removeAVL(int value, No **pt, char *is_modified_heigth)
                                 fatherS = s;
                                 s = s->esq;
                             }
-                            swap(pt, &fatherS->esq);
-                            removeAVL(value, &(*pt)->dir, is_modified_heigth);
+                            troca(pt, &fatherS->esq);
+                            removeAVL(value, &(*pt)->dir, h);
                         }
-                        balance(pt, 'R', is_modified_heigth);
+                        balance(pt, 'R', h);
                     }
                     free(aux);
                 }
