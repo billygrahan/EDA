@@ -147,10 +147,6 @@ void DobraE(){
         int idx = rand() % n;
         if (buscarNo(tabelaE, valores[idx], tamanho, 1))
             achadasE++;
-        // if (buscarNo(tabelaOU, valores[idx], tamanho, 2))
-        //     achadasOU++;
-        // if (buscarNo(tabelaXOR, valores[idx], tamanho, 3))
-        //     achadasXOR++;
     }
 
     printf("Hash Dobra E:   Chaves encontradas: %d de %d buscas\n", achadasE, buscas);
@@ -212,7 +208,7 @@ void DobraOU()
         adicionarNo(tabelaOU, valores[i], tamanho, 2);
     }
 
-    imprimirTabela(tabelaOU, tamanho);
+    //imprimirTabela(tabelaOU, tamanho);
 
     // Busca 1.000.000 de chaves aleatórias existentes em cada tabela
     int achadasE = 0, achadasOU = 0, achadasXOR = 0;
@@ -288,7 +284,7 @@ void DobraXOR()
         adicionarNo(tabelaXOR, valores[i], tamanho, 3);
     }
 
-    imprimirTabela(tabelaXOR, tamanho);
+    //imprimirTabela(tabelaXOR, tamanho);
 
     // Busca 1.000.000 de chaves aleatórias existentes em cada tabela
     int achadasE = 0, achadasOU = 0, achadasXOR = 0;
@@ -327,8 +323,8 @@ void DobraXOR()
 int main()
 {
     //DobraE();
-    //DobraOU();
-    DobraXOR();
+    DobraOU();
+    //DobraXOR();
 
     return 0;
 }

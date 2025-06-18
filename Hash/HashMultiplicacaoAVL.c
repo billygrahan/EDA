@@ -35,17 +35,6 @@ int buscarNo(No **tabela, int chave, int tamanho)
     return 0;
 }
 
-void embaralhar(int *vet, int n)
-{
-    for (int i = n - 1; i > 0; i--)
-    {
-        int j = rand() % (i + 1);
-        int tmp = vet[i];
-        vet[i] = vet[j];
-        vet[j] = tmp;
-    }
-}
-
 void MultiplicacaoAVL()
 {
     clock_t inicio, fim;
@@ -91,6 +80,9 @@ void MultiplicacaoAVL()
     printf("Tempo de execução: %.4f segundos\n", tempo_gasto);
 }
 
+// gcc -Wall -Wextra -g3 HashMultiplicacaoAVL.c ../AVL/AVL.c -o HashMultiplicacaoAVL
+// mkdir -p output
+// ./HashMultiplicacaoAVL
 int main()
 {
     MultiplicacaoAVL();

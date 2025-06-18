@@ -3,12 +3,15 @@
 #include <time.h>
 #include "../AVL/AVL.h"
 
-// Funções hash de dobra binária
+// dividi em 4 chaves de 8 bits, faz o AND entre elas e retorna o resultado
 int hashDobraE(int chave, int tamanho)
 {
-    int parte1 = chave & 0xFFFF;
-    int parte2 = (chave >> 16) & 0xFFFF;
-    int resultado = parte1 & parte2;
+    int bloco1 = (chave >> 0) & 0xFF;  // bits  0-7
+    int bloco2 = (chave >> 8) & 0xFF;  // bits  8-15
+    int bloco3 = (chave >> 16) & 0xFF; // bits 16-23
+    int bloco4 = (chave >> 24) & 0xFF; // bits 24-31
+
+    int resultado = bloco1 & bloco2 & bloco3 & bloco4;
     return resultado & (tamanho - 1);
 }
 
