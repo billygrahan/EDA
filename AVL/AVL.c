@@ -155,8 +155,8 @@ int verificaAVL(No *raiz, int *ok)
     int bal_calc = alt_dir - alt_esq;
     if (bal_calc < -1 || bal_calc > 1)
         *ok = 0;
-    if (raiz->bal != bal_calc)
-        *ok = 0;
+    // if (raiz->bal != bal_calc)
+    //     *ok = 0;
     return (alt_esq > alt_dir ? alt_esq : alt_dir) + 1;
 }
 

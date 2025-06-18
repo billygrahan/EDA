@@ -4,7 +4,8 @@
 #include "../AVL/AVL.h"
 
 // gcc -Wall -Wextra -g3 /home/billy/EDA/AVL/TesteAVL.c /home/billy/EDA/AVL/AVL.c -o /home/billy/EDA/AVL/output/TesteAVL
-/// home/billy/EDA/AVL/output/TesteAVL
+// mkdir -p /home/billy/EDA/AVL/output
+// home/billy/EDA/AVL/output/TesteAVL
 int main()
 {
     clock_t inicio, fim;
@@ -12,53 +13,57 @@ int main()
 
     inicio = clock(); // Marca o início
 
-    int num_inserir = 10000;
-    int num_remover = 1000;
-    int max_val = 100000;
+    int n_Avls = 1;
+    for (int i = 0; i < n_Avls; i++) {
+        int num_inserir = 10000;
+        int num_remover = 1000;
+        int max_val = 100000;
 
-    No *raiz = NULL;
-    char h;
+        No *raiz = NULL;
+        char h;
 
-    // 1. Gerar vetor de valores únicos para inserir
-    int *valores = malloc(max_val * sizeof(int));
-    for (int i = 0; i < max_val; i++)
-        valores[i] = i + 1;
-    srand(time(NULL));
-    embaralhar(valores, max_val);
+        // 1. Gerar vetor de valores únicos para inserir
+        int *valores = malloc(max_val * sizeof(int));
+        for (int i = 0; i < max_val; i++)
+            valores[i] = i + 1;
+        srand(time(NULL));
+        embaralhar(valores, max_val);
 
-    // 2. Inserir os 10000 primeiros valores embaralhados
-    for (int i = 0; i < num_inserir; i++)
-        inserir(&raiz, valores[i], &h);
+        // 2. Inserir os 10000 primeiros valores embaralhados
+        for (int i = 0; i < num_inserir; i++)
+            inserir(&raiz, valores[i], &h);
 
-    // 3. Verificar se é AVL
-    if (arvoreEhAVL(raiz))
-        printf("Após inserção: A árvore está balanceada (AVL).\n");
-    else
-        printf("Após inserção: A árvore NÃO está balanceada!\n");
+        // 3. Verificar se é AVL
+        if (arvoreEhAVL(raiz))
+            printf("Após inserção: A árvore está balanceada (AVL).\n");
+        else
+            printf("Após inserção: A árvore NÃO está balanceada!\n");
 
-    // 4. Remover 1000 valores aleatórios dos já inseridos
-    embaralhar(valores, num_inserir); // embaralha os 10000 inseridos
-    char is_modified_heigth;
-    for (int i = 0; i < num_remover; i++)
-        removeAVL(valores[i], &raiz, &is_modified_heigth);
+        // 4. Remover 1000 valores aleatórios dos já inseridos
+        embaralhar(valores, num_inserir); // embaralha os 10000 inseridos
+        char is_modified_heigth;
+        for (int i = 0; i < num_remover; i++)
+            removeAVL(valores[i], &raiz, &is_modified_heigth);
 
-    // 5. Verificar se restaram 9000 nós
-    int total = contar_nos(raiz);
-    printf("Após remoção: A árvore possui %d nós (esperado: 9000).\n", total);
+        // 5. Verificar se restaram 9000 nós
+        int total = contar_nos(raiz);
+        printf("Após remoção: A árvore possui %d nós (esperado: %d).\n", total, num_inserir - num_remover);
 
-    // 6. Verificar novamente se é AVL
-    if (arvoreEhAVL(raiz))
-        printf("Após remoção: A árvore está balanceada (AVL).\n");
-    else
-        printf("Após remoção: A árvore NÃO está balanceada!\n");
+        // 6. Verificar novamente se é AVL
+        if (arvoreEhAVL(raiz))
+            printf("Após remoção: A árvore está balanceada (AVL).\n");
+        else
+            printf("Após remoção: A árvore NÃO está balanceada!\n");
 
-    // Libera memória
-    liberar(raiz);
-    free(valores);
+        // Libera memória
+        liberar(raiz);
+        free(valores);
 
-    fim = clock(); // Marca o fim
-    tempo_gasto = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
-    printf("Tempo de execução: %.4f segundos\n", tempo_gasto);
+        fim = clock(); // Marca o fim
+        tempo_gasto = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
+        printf("Tempo de execução: %.4f segundos\n", tempo_gasto);
+    }
+    
     
     return 0;
 }

@@ -8,11 +8,15 @@ typedef struct No
     struct No *prox;
 } No;
 
+// dividi em 4 chaves de 8 bits, faz o AND entre elas e retorna o resultado
 int hashDobraE(int chave, int tamanho)
 {
-    int parte1 = chave & 0xFFFF;
-    int parte2 = (chave >> 16) & 0xFFFF;
-    int resultado = parte1 & parte2;
+    int bloco1 = (chave >> 0) & 0xFF;  // bits  0-7
+    int bloco2 = (chave >> 8) & 0xFF;  // bits  8-15
+    int bloco3 = (chave >> 16) & 0xFF; // bits 16-23
+    int bloco4 = (chave >> 24) & 0xFF; // bits 24-31
+
+    int resultado = bloco1 & bloco2 & bloco3 & bloco4;
     return resultado & (tamanho - 1);
 }
 
@@ -102,7 +106,7 @@ void DobraE(){
     inicio = clock();
 
     int n = 250000;
-    int tamanho = 200000;
+    int tamanho = 1 << 18; // 262144
     int max_val = 2000000000;
     int buscas = 1000000;
     int colisoes = 0;
@@ -179,7 +183,7 @@ void DobraOU()
     inicio = clock();
 
     int n = 250000;
-    int tamanho = 200000;
+    int tamanho = 1 << 18; // 262144
     int max_val = 2000000000;
     int buscas = 1000000;
     int colisoes = 0;
@@ -256,7 +260,7 @@ void DobraXOR()
     inicio = clock();
 
     int n = 250000;
-    int tamanho = 200000;
+    int tamanho = 1 << 18;
     int max_val = 2000000000;
     int buscas = 1000000;
     int colisoes = 0;
@@ -317,11 +321,14 @@ void DobraXOR()
     printf("Tempo de execução: %.4f segundos\n", tempo_gasto);
 }
 
+// gcc -Wall -Wextra -g3 /home/billy/EDA/Hash/HashDobrabin.c -o /home/billy/EDA/Hash/output/HashDobrabin
+// mkdir -p /home/billy/EDA/Hash/output
+// /home/billy/EDA/Hash/output/HashDobrabin
 int main()
 {
     //DobraE();
-    DobraOU();
-    //DobraXOR();
+    //DobraOU();
+    DobraXOR();
 
     return 0;
 }
