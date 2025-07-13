@@ -1,4 +1,4 @@
-#include "lib.h"
+#include "RB.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>

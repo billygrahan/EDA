@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lib.h"
+#include "RB.h"
 
-// gcc -Wall -Wextra -g3 main.c lib.c -o output/RBTest
+// gcc -Wall -Wextra -g3 main.c RB.c -o output/RBTest
 // ./output/RBTest
 int main()
 {
